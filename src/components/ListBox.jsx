@@ -1,21 +1,22 @@
-import { useState } from "react";
-import MovieList from "./MovieList";
+// import { useState } from "react";
 
-const ListBox = ({ movies }) => {
-    const [isOpen1, setIsOpen1] = useState(true);
+// const ListBox = ({ children }) => {
+//     const [isOpen1, setIsOpen1] = useState(true);
 
-    return (
-        <div className="box">
-            <button
-                className="btn-toggle"
-                onClick={() => setIsOpen1((open) => !open)}
-            >
-                {isOpen1 ? "–" : "+"}
-            </button>
+//     return (
+//         <div className="box">
+//             <button
+//                 className="btn-toggle"
+//                 onClick={() => setIsOpen1((open) => !open)}
+//             >
+//                 {isOpen1 ? "–" : "+"}
+//             </button>
 
-            {isOpen1 && <MovieList movies={movies} />}
-        </div>
-    );
-};
+//             {isOpen1 && children}
+//         </div>
+//     );
+// };
 
-export default ListBox;
+// export default ListBox;
+
+// NO NEED TO USE BECAUSE IT LISTBOX AND WATCHEDBOX HAS THE SAME CONTENT
