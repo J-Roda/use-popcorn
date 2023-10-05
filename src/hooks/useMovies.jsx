@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 
-export const useMovies = (query, callback) => {
+export const useMovies = (query) => {
     const [movies, setMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
     // Fetch the movies with abort controller and cleanup function to avoid multiple request
     useEffect(() => {
-        callback?.();
-
         const controller = new AbortController();
 
         async function fetchMovies() {
@@ -32,7 +30,6 @@ export const useMovies = (query, callback) => {
                     throw new Error("Movie not found");
 
                 setMovies(data.Search);
-                // handleCloseMovie();
                 setError("");
             } catch (error) {
                 if (error.name === "AbortError") setError(error.message);
@@ -52,7 +49,7 @@ export const useMovies = (query, callback) => {
         return () => {
             controller.abort();
         };
-    }, [query, callback]);
+    }, [query]);
 
     return { movies, isLoading, error };
 };

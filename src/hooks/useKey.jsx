@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 export const useKey = (key, action) => {
     useEffect(() => {
         const callback = (e) => {
