@@ -1,14 +1,16 @@
 import Movie from "./Movie";
 
-const MovieList = ({ movies }) => {
+const MovieList = ({ movies, onHandleSelectMovies }) => {
     return (
-        <div>
-            <ul className="list">
-                {movies?.map((movie) => (
-                    <Movie movie={movie} key={movie.imdbID} />
-                ))}
-            </ul>
-        </div>
+        <ul className="list list-movies">
+            {movies?.map((movie) => (
+                <Movie
+                    movie={movie}
+                    key={movie.imdbID}
+                    onHandleSelectMovies={onHandleSelectMovies}
+                />
+            ))}
+        </ul>
     );
 };
 
