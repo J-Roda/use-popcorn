@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
+import { useKey } from "../hooks/useKey";
 
 const MovieDetails = ({
     selectedId,
@@ -57,18 +58,7 @@ const MovieDetails = ({
         }
     }
 
-    useEffect(() => {
-        const callback = (e) => {
-            if (e.code === "Escape") {
-                onHandleCloseMovie();
-                console.log("CLPSO");
-            }
-        };
-
-        document.addEventListener("keydown", callback);
-
-        return () => document.removeEventListener("keydown", callback);
-    }, [onHandleCloseMovie]);
+    useKey("Escape", onHandleCloseMovie);
 
     useEffect(() => {
         setIsLoading(true);
