@@ -1,50 +1,58 @@
-// export const useMovies = () => {
-//     // Fetch the movies with abort controller and cleanup function to avoid multiple request
-//     useEffect(() => {
-//         const controller = new AbortController();
+import { useEffect, useState } from "react";
 
-//         async function fetchMovies() {
-//             try {
-//                 setIsLoading(true);
-//                 setError("");
+export const useMovies = (query, callback) => {
+    const [movies, setMovies] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
-//                 const res = await fetch(
-//                     `http://www.omdbapi.com/?apikey=77a6f72c&s=${query}`,
-//                     { signal: controller.signal }
-//                 );
+    // Fetch the movies with abort controller and cleanup function to avoid multiple request
+    useEffect(() => {
+        callback?.();
 
-//                 if (!res.ok)
-//                     throw new Error(
-//                         "Something went wrong with fetching movies"
-//                     );
+        const controller = new AbortController();
 
-//                 const data = await res.json();
+        async function fetchMovies() {
+            try {
+                setIsLoading(true);
+                setError("");
 
-//                 if (data.Response === "False")
-//                     throw new Error("Movie not found");
+                const res = await fetch(
+                    `http://www.omdbapi.com/?apikey=77a6f72c&s=${query}`,
+                    { signal: controller.signal }
+                );
 
-//                 setMovies(data.Search);
-//                 handleCloseMovie();
-//                 setError("");
-//             } catch (error) {
-//                 if (error.name === "AbortError") setError(error.message);
-//             } finally {
-//                 setIsLoading(false);
-//             }
-//         }
+                if (!res.ok)
+                    throw new Error(
+                        "Something went wrong with fetching movies"
+                    );
 
-//         if (query.length < 3) {
-//             setMovies([]);
-//             setError("");
-//             return;
-//         }
+                const data = await res.json();
 
-//         fetchMovies();
+                if (data.Response === "False")
+                    throw new Error("Movie not found");
 
-//         return () => {
-//             controller.abort();
-//         };
-//     }, [query]);
+                setMovies(data.Search);
+                // handleCloseMovie();
+                setError("");
+            } catch (error) {
+                if (error.name === "AbortError") setError(error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
 
-//     return <div>useMovies</div>;
-// };
+        if (query.length < 3) {
+            setMovies([]);
+            setError("");
+            return;
+        }
+
+        fetchMovies();
+
+        return () => {
+            controller.abort();
+        };
+    }, [query, callback]);
+
+    return { movies, isLoading, error };
+};
